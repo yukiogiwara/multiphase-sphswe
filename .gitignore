@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+# ImGui
+imgui
+
+# OpenGL
+GL
+GLFW
+glm
