@@ -69,3 +69,66 @@ float LaplaceInterpolate(const std::vector<float> &m, const std::vector<float> &
     }
     return val;
 }
+
+/**
+ * @brief interpolation with kernel function
+ * @param[in] m mass
+ * @param[in, out] phi physical quantity
+ * @param[in] rho density
+ * @param[in] r position
+ * @param[in] n number of particles
+ * @param[in] indices neighbor particles
+ * @param[in] w kernel
+ * @param[in] h effective_radius
+ */
+void InterpolateAll(const std::vector<float> &m, std::vector<float>* phi, const std::vector<float> &rho, const std::vector<glm::vec2> &r, unsigned int n, const std::vector<std::vector<unsigned int>> &indices, const kernel &w, float h) {
+    std::vector<float> val(n);
+    for(unsigned int i = 0; i < n; i++) {
+        val[i] = Interpolate(m, *phi, rho, r, i, indices[i], w, h);
+    }
+    for(unsigned int i = 0; i < n; i++) {
+        phi->at(i) = val[i];
+    }
+}
+
+/**
+ * @brief interpolation with kernel function
+ * @param[in] m mass
+ * @param[in, out] phi physical quantity
+ * @param[in] rho density
+ * @param[in] r position
+ * @param[in] n number of particles
+ * @param[in] indices neighbor particles
+ * @param[in] w kernel
+ * @param[in] h effective_radius
+ */
+void GradInterpolateAll(const std::vector<float> &m, std::vector<glm::vec2>* phi, const std::vector<float> &rho, const std::vector<glm::vec2> &r, unsigned int n, const std::vector<std::vector<unsigned int>> &indices, const gkernel &w, float h) {
+    std::vector<glm::vec2> val(n);
+    for(unsigned int i = 0; i < n; i++) {
+        val[i] = GradInterpolate(m, *phi, rho, r, i, indices[i], w, h);
+    }
+    for(unsigned int i = 0; i < n; i++) {
+        phi->at(i) = val[i];
+    }
+}
+
+/**
+ * @brief interpolation with kernel function
+ * @param[in] m mass
+ * @param[in, out] phi physical quantity
+ * @param[in] rho density
+ * @param[in] r position
+ * @param[in] n number of particles
+ * @param[in] indices neighbor particles
+ * @param[in] w kernel
+ * @param[in] h effective_radius
+ */
+void LaplaceInterpolateAll(const std::vector<float> &m, std::vector<float>* phi, const std::vector<float> &rho, const std::vector<glm::vec2> &r, unsigned int n, const std::vector<std::vector<unsigned int>> &indices, const lkernel &w, float h) {
+    std::vector<float> val(n);
+    for(unsigned int i = 0; i < n; i++) {
+        val[i] = LaplaceInterpolate(m, *phi, rho, r, i, indices[i], w, h);
+    }
+    for(unsigned int i = 0; i < n; i++) {
+        phi->at(i) = val[i];
+    }
+}
