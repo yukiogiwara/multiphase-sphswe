@@ -42,4 +42,5 @@ void ParticleSystem::AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, flo
     velocities_.push_back(vel);
     densities_.push_back(dens);
     attributes_.push_back(attr);
+    num_particles_++;
 }
