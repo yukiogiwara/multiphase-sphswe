@@ -12,3 +12,7 @@
 using kernel = float (*)(float, float);
 using gkernel = glm::vec2 (*)(glm::vec2, float, float);
 using lkernel = float (*)(float, float);
+
+// terrain function pointer
+
+using terrain = float(*)(float, float);
