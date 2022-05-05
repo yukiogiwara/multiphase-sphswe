@@ -10,9 +10,9 @@
 // kernel function pointer
 
 using kernel = float (*)(float, float);
-using gkernel = glm::vec2 (*)(glm::vec2, float, float);
+using gkernel = glm::vec2 (*)(const glm::vec2 &, float, float);
 using lkernel = float (*)(float, float);
 
 // ground function pointer
 
-using ground = float (*)(glm::vec2);
+using ground = float (*)(const glm::vec2 &);
