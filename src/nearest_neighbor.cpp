@@ -105,6 +105,7 @@ void NearestNeighbor::Register(const std::vector<glm::vec2> &ppos) {
  */
 void NearestNeighbor::Search(const std::vector<glm::vec2> &ppos, std::vector<std::vector<int>> *neighbors, float radius) {
     for(int i = 0; i < (int)ppos.size(); i++) {
+        neighbors->at(i).clear();
         Search(ppos[i], ppos, &neighbors->at(i), radius);
     }
 }
