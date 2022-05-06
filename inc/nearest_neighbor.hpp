@@ -26,6 +26,8 @@ public:
     void Search(const std::vector<glm::vec2> &ppos, std::vector<std::vector<int>> *neighbors, float radius);
     void Search(const glm::vec2 &pos, const std::vector<glm::vec2> &ppos, std::vector<int> *neighbors, float radius);
 
+    void CheckParameters() const;
+
 public:
 
 private:
@@ -34,7 +36,6 @@ private:
     glm::ivec2 CalculateIndex(const glm::vec2 &pos) const;
     int CalculateHash(const glm::vec2 &pos) const;
     int CalculateHash(const glm::ivec2 &index) const;
-    void CheckParameters() const;
 
 private:
     glm::vec2 origin_;

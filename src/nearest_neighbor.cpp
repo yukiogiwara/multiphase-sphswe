@@ -37,8 +37,6 @@ NearestNeighbor::NearestNeighbor(const glm::vec2 &min_cord, const glm::vec2 &max
     grid_hash_.resize(num_particles);
     starts_.resize(num_all_cells_);
     ends_.resize(num_all_cells_);
-
-    CheckParameters();
 }
 
 /**
@@ -133,6 +131,18 @@ void NearestNeighbor::Search(const glm::vec2 &pos, const std::vector<glm::vec2> 
 }
 
 /**
+ * @brief check parameters
+ */
+void NearestNeighbor::CheckParameters() const {
+    std::cout << std::endl;
+    std::cout << "NearestNeighbor:" << std::endl;
+    std::cout << "origin_: "     << "( " << origin_[0]     << ", " << origin_[1]     << " )" << std::endl;
+    std::cout << "cell_width_: " << "( " << cell_width_[0] << ", " << cell_width_[1] << " )" << std::endl;
+    std::cout << "num_cells_: "  << "( " << num_cells_[0]  << ", " << num_cells_[1]  << " )" << std::endl;
+    std::cout << "num_all_cells_: " << num_all_cells_ << std::endl;
+}
+
+/**
  * @brief search neigbor particles in a cell
  * @param[in] pos search position
  * @param[in] ppos particles position
@@ -186,16 +196,4 @@ int NearestNeighbor::CalculateHash(const glm::vec2 &pos) const {
 int NearestNeighbor::CalculateHash(const glm::ivec2 &index) const {
     int hash = index[1] * num_cells_[0] + index[0];
     return hash;
-}
-
-/**
- * @brief check parameters
- */
-void NearestNeighbor::CheckParameters() const {
-    std::cout << std::endl;
-    std::cout << "NearestNeighbor:" << std::endl;
-    std::cout << "origin_: "     << "( " << origin_[0]     << ", " << origin_[1]     << " )" << std::endl;
-    std::cout << "cell_width_: " << "( " << cell_width_[0] << ", " << cell_width_[1] << " )" << std::endl;
-    std::cout << "num_cells_: "  << "( " << num_cells_[0]  << ", " << num_cells_[1]  << " )" << std::endl;
-    std::cout << "num_all_cells_: " << num_all_cells_ << std::endl;
 }

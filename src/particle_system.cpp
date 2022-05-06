@@ -10,9 +10,8 @@
 /**
  * @brief constructor
  */
-ParticleSystem::ParticleSystem()
-:num_particles_(0) {
-
+ParticleSystem::ParticleSystem() {
+    num_particles_.resize(kNumAttributes, 0);
 }
 
 /**
@@ -27,7 +26,17 @@ ParticleSystem::~ParticleSystem() {
  * @return number of particles
  */
 int ParticleSystem::GetNumParticles() const {
-    return num_particles_;
+    int sum = std::accumulate(num_particles_.begin(), num_particles_.end(), 0);
+    return sum;
+}
+
+/**
+ * @brief get number of particles
+ * @param[in] attr attribute
+ * @return number of particles
+ */
+int ParticleSystem::GetNumParticles(ParticleAttribute attr) const {
+    return num_particles_[attr];
 }
 
 /**
@@ -37,10 +46,22 @@ int ParticleSystem::GetNumParticles() const {
  * @param[in] dens density
  * @param[in] attr attribute
  */
-void ParticleSystem::AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, int attr) {
+void ParticleSystem::AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, ParticleAttribute attr) {
     positions_.push_back(pos);
     velocities_.push_back(vel);
     densities_.push_back(dens);
     attributes_.push_back(attr);
-    num_particles_++;
+    num_particles_[attr]++;
+}
+
+/**
+ * @brief check parameters
+ */
+void ParticleSystem::CheckParameters() const {
+    std::cout << std::endl;
+    std::cout << "ParticleSystem:" << std::endl;
+    std::cout << "num_particles: " << GetNumParticles() << std::endl;
+    for(int i = 0; i < kNumAttributes; i++) {
+        std::cout << "num_particles" << "[" << i << "]: " << GetNumParticles(static_cast<ParticleAttribute>(i)) << std::endl;
+    }
 }

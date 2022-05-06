@@ -51,7 +51,6 @@ Simulater::Simulater(float scale) {
     nn_ = std::make_unique<NearestNeighbor>(min_boundary_cord_, max_boundary_cord_, effective_radius_, particles_->GetNumParticles());
 
     CheckParameters();
-    std::cout << "num_particles: " << particles_->GetNumParticles() << std::endl;
 }
 
 /**
@@ -81,8 +80,8 @@ void Simulater::GenerateBoundary() {
         glm::vec2 min_pos = min_cord_ - (2*l+1)*particle_radius_;
         glm::vec2 max_pos = max_cord_ + (2*l+1)*particle_radius_;
         for(int xi = 0; xi < n[0]; xi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, 1);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, 1);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, kBoundary);
             min_pos[0] += d[0];
             max_pos[0] -= d[0];
         }
@@ -91,8 +90,8 @@ void Simulater::GenerateBoundary() {
         min_pos[1] += d[1];
         max_pos[1] -= d[1];
         for(int zi = 0; zi < n[1]-2; zi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, 1);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, 1);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, kBoundary);
             min_pos[1] += d[1];
             max_pos[1] -= d[1];
         }
@@ -114,7 +113,7 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
     for(float x = min_r[0]; x <= max_r[0]; x += 2*particle_radius_) {
         for(float z = min_r[1]; z <= max_r[1]; z += 2*particle_radius_) {
             glm::vec2 pos = glm::vec2(x, z);
-            particles_->AddParticle(pos, glm::vec2(0.0f), 0.0f, 0);
+            particles_->AddParticle(pos, glm::vec2(0.0f), 0.0f, kFluid);
         }
     }
 }
@@ -122,7 +121,7 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
 /**
  * @brief check parameters
  */
-void Simulater::CheckParameters() {
+void Simulater::CheckParameters() const {
     std::cout << std::endl;
     std::cout << "Simulater:" << std::endl;
     std::cout << "min_cord_: " << "( " << min_cord_[0] << ", " << min_cord_[1] << " )" << std::endl;
@@ -138,4 +137,6 @@ void Simulater::CheckParameters() {
     std::cout << "num_boundary_layers_: " << num_boundary_layers_ << std::endl;
     std::cout << "min_boundary_cord_: " << "( " << min_boundary_cord_[0] << ", " << min_boundary_cord_[1] << " )" << std::endl;
     std::cout << "max_boundary_cord_: " << "( " << max_boundary_cord_[0] << ", " << max_boundary_cord_[1] << " )" << std::endl;
+    particles_->CheckParameters();
+    nn_->CheckParameters();
 }

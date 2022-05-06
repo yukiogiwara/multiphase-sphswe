@@ -8,7 +8,10 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <iostream>
 #include <vector>
+#include <numeric>
+#include "type.hpp"
 
 /**
  * @brief control particles
@@ -19,17 +22,20 @@ public:
     ~ParticleSystem();
 
     int GetNumParticles() const;
+    int GetNumParticles(ParticleAttribute attr) const;
 
-    void AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, int attr);
+    void AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, ParticleAttribute attr);
+
+    void CheckParameters() const;
 
 public:
     std::vector<glm::vec2> positions_;
     std::vector<glm::vec2> velocities_;
     std::vector<float> densities_;
-    std::vector<int> attributes_;
+    std::vector<ParticleAttribute> attributes_;
 
 private:
 
 private:
-    int num_particles_;
+    std::vector<int> num_particles_;
 };

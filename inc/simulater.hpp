@@ -31,7 +31,7 @@ private:
     void GenerateBoundary();
     void GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos);
 
-    void CheckParameters();
+    void CheckParameters() const;
 
 private:
     // scale
