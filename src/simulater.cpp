@@ -76,6 +76,14 @@ void Simulater::Evolve() {
 }
 
 /**
+ * @brief get delta time
+ * @return delta time
+ */
+float Simulater::GetDeltaTime() const {
+    return delta_time_;
+}
+
+/**
  * @brief calculate density of particles
  */
 void Simulater::CalculateDensity() {
@@ -188,14 +196,6 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
             particles_->AddParticle(pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 0.0f, kFluid);
         }
     }
-}
-
-/**
- * @brief get delta time
- * @return delta time
- */
-float Simulater::GetDeltaTime() const {
-    return delta_time_;
 }
 
 /**

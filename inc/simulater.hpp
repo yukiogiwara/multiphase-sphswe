@@ -25,6 +25,8 @@ public:
 
     void Evolve();
 
+    float GetDeltaTime() const;
+
 public:
 
 private:
@@ -36,7 +38,6 @@ private:
     void Integrate();
     void UpdateHeight();
 
-    float GetDeltaTime() const;
     void CheckParameters() const;
 
 private:
