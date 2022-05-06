@@ -24,14 +24,16 @@ public:
     int GetNumParticles() const;
     int GetNumParticles(ParticleAttribute attr) const;
 
-    void AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, ParticleAttribute attr);
+    void AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float mass, float dens, float height, ParticleAttribute attr);
 
     void CheckParameters() const;
 
 public:
     std::vector<glm::vec2> positions_;
     std::vector<glm::vec2> velocities_;
+    std::vector<float> masses_;
     std::vector<float> densities_;
+    std::vector<float> heights_;
     std::vector<ParticleAttribute> attributes_;
 
 private:

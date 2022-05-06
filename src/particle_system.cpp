@@ -46,10 +46,12 @@ int ParticleSystem::GetNumParticles(ParticleAttribute attr) const {
  * @param[in] dens density
  * @param[in] attr attribute
  */
-void ParticleSystem::AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float dens, ParticleAttribute attr) {
+void ParticleSystem::AddParticle(const glm::vec2 &pos, const glm::vec2 &vel, float mass, float dens, float height, ParticleAttribute attr) {
     positions_.push_back(pos);
     velocities_.push_back(vel);
+    masses_.push_back(mass);
     densities_.push_back(dens);
+    heights_.push_back(height);
     attributes_.push_back(attr);
     num_particles_[attr]++;
 }
