@@ -48,7 +48,12 @@ Simulater::Simulater(float scale) {
     GenerateFluid(glm::vec2(-scale/4.0f), glm::vec2(scale/4.0f));
 
     // nearest neighbor
+    neighbors_.resize(particles_->GetNumParticles());
     nn_ = std::make_unique<NearestNeighbor>(min_boundary_cord_, max_boundary_cord_, effective_radius_, particles_->GetNumParticles());
+
+    // initialize height
+    CalculateDensity();
+    UpdateHeight();
 
     CheckParameters();
 }
@@ -64,7 +69,74 @@ Simulater::~Simulater() {
  * @brief time evolution
  */
 void Simulater::Evolve() {
+    CalculateDensity();
+    CalculateAcceleration();
+    Integrate();
+    UpdateHeight();
+}
 
+/**
+ * @brief calculate density of particles
+ */
+void Simulater::CalculateDensity() {
+    nn_->Register(particles_->positions_);
+    nn_->Search(particles_->positions_, &neighbors_, effective_radius_);
+    for(int i = 0; i < particles_->GetNumParticles(); i++) {
+        particles_->densities_[i] = Interpolate(particles_->masses_, particles_->densities_, particles_->densities_, particles_->positions_, i, neighbors_[i], kernel_, effective_radius_);
+    }
+}
+
+/**
+ * @brief calculate acceleration of particles
+ */
+void Simulater::CalculateAcceleration() {
+    for(int i = 0; i < particles_->GetNumParticles(); i++) {
+        if(particles_->attributes_[i] == kBoundary) continue;
+
+        particles_->accelerations_[i] = glm::vec2(0.0f);
+
+        particles_->accelerations_[i] += - gravity_ / density_ * InterpolateGradient(particles_->masses_, particles_->densities_, particles_->densities_, particles_->positions_, i, neighbors_[i], gkernel_, effective_radius_);
+        particles_->accelerations_[i] += kinematic_viscosity_ / particles_->densities_[i] * InterpolateLaplacian(particles_->masses_, particles_->velocities_, particles_->densities_, particles_->positions_, i, neighbors_[i], lkernel_, effective_radius_);
+
+        float d = 0.01f;
+        glm::vec2 dx = glm::vec2(d, 0.0f);
+        glm::vec2 dz = glm::vec2(0.0f, d);
+        particles_->accelerations_[i][0] += - gravity_ * (terrain_->GetHeight(particles_->positions_[i]+dx) - terrain_->GetHeight(particles_->positions_[i]-dx)) / (2*d);
+        particles_->accelerations_[i][1] += - gravity_ * (terrain_->GetHeight(particles_->positions_[i]+dz) - terrain_->GetHeight(particles_->positions_[i]-dz)) / (2*d);
+    }
+}
+
+/**
+ * @brief integrate particles
+ */
+void Simulater::Integrate() {
+    for(int i = 0; i < particles_->GetNumParticles(); i++) {
+        if(particles_->attributes_[i] == kBoundary) continue;
+
+        // integrate velocity
+        particles_->velocities_[i] += delta_time_ * particles_->accelerations_[i];
+
+        // maximum velocity constraint
+        float v_max = sqrtf(gravity_*particles_->densities_[i]/density_);
+        float v_len = glm::length(particles_->velocities_[i]);
+        if(v_len > v_max) particles_->velocities_[i] *= v_max / v_len;
+
+        // integrate position
+        particles_->positions_[i] += delta_time_ * particles_->velocities_[i];
+
+        // boundary
+        particles_->positions_[i] = glm::clamp(particles_->positions_[i], min_cord_, max_cord_);
+    }
+}
+
+/**
+ * @brief update height of particles
+ */
+void Simulater::UpdateHeight() {
+    for(int i = 0; i < particles_->GetNumParticles(); i++) {
+        if(particles_->attributes_[i] == kBoundary) continue;;
+        particles_->heights_[i] = particles_->densities_[i] / density_ + terrain_->GetHeight(particles_->positions_[i]);
+    }
 }
 
 /**
@@ -80,8 +152,8 @@ void Simulater::GenerateBoundary() {
         glm::vec2 min_pos = min_cord_ - (2*l+1)*particle_radius_;
         glm::vec2 max_pos = max_cord_ + (2*l+1)*particle_radius_;
         for(int xi = 0; xi < n[0]; xi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, kBoundary);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, kBoundary);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
             min_pos[0] += d[0];
             max_pos[0] -= d[0];
         }
@@ -90,8 +162,8 @@ void Simulater::GenerateBoundary() {
         min_pos[1] += d[1];
         max_pos[1] -= d[1];
         for(int zi = 0; zi < n[1]-2; zi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), 0.0f, kBoundary);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), 0.0f, kBoundary);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
             min_pos[1] += d[1];
             max_pos[1] -= d[1];
         }
@@ -113,7 +185,7 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
     for(float x = min_r[0]; x <= max_r[0]; x += 2*particle_radius_) {
         for(float z = min_r[1]; z <= max_r[1]; z += 2*particle_radius_) {
             glm::vec2 pos = glm::vec2(x, z);
-            particles_->AddParticle(pos, glm::vec2(0.0f), 0.0f, kFluid);
+            particles_->AddParticle(pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 0.0f, kFluid);
         }
     }
 }

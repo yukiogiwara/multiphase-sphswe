@@ -31,6 +31,11 @@ private:
     void GenerateBoundary();
     void GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos);
 
+    void CalculateDensity();
+    void CalculateAcceleration();
+    void Integrate();
+    void UpdateHeight();
+
     void CheckParameters() const;
 
 private:
@@ -62,6 +67,7 @@ private:
     glm::vec2 min_boundary_cord_;
     glm::vec2 max_boundary_cord_;
 
+    std::vector<std::vector<int>> neighbors_;
     std::unique_ptr<ParticleSystem> particles_;
     std::unique_ptr<NearestNeighbor> nn_;
     std::unique_ptr<Terrain> terrain_; 
