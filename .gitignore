@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+bin
 
 # ImGui
 imgui
@@ -38,3 +39,6 @@ imgui
 GL
 GLFW
 glm
+
+# Mac
+.DS_Store
