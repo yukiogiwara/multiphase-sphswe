@@ -36,6 +36,7 @@ private:
     void Integrate();
     void UpdateHeight();
 
+    float GetDeltaTime() const;
     void CheckParameters() const;
 
 private:

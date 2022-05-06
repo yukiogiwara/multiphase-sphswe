@@ -191,6 +191,14 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
 }
 
 /**
+ * @brief get delta time
+ * @return delta time
+ */
+float Simulater::GetDeltaTime() const {
+    return delta_time_;
+}
+
+/**
  * @brief check parameters
  */
 void Simulater::CheckParameters() const {
