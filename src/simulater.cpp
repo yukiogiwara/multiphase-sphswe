@@ -23,7 +23,7 @@ Simulater::Simulater(float scale) {
     kernel_particles_ = 20;
     kernel_ = Poly6;
     gkernel_ = GradSpiky;
-    lkernel_ = LaplaceSpiky;
+    lkernel_ = LaplaceViscosity;
 
     // terrain
     terrain_ = std::make_unique<Terrain>(Flat);
