@@ -192,6 +192,7 @@ int NearestNeighbor::CalculateHash(const glm::ivec2 &index) const {
  * @brief check parameters
  */
 void NearestNeighbor::CheckParameters() const {
+    std::cout << std::endl;
     std::cout << "NearestNeighbor:" << std::endl;
     std::cout << "origin_: "     << "( " << origin_[0]     << ", " << origin_[1]     << " )" << std::endl;
     std::cout << "cell_width_: " << "( " << cell_width_[0] << ", " << cell_width_[1] << " )" << std::endl;
