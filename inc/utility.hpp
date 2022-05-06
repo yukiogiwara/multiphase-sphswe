@@ -21,3 +21,7 @@ void InterpolateGradient(const std::vector<float> &m, std::vector<glm::vec2>* ph
 
 float InterpolateLaplacian(const std::vector<float> &m, const std::vector<float> &phi, const std::vector<float> &rho, const std::vector<glm::vec2> &r, unsigned int i, const std::vector<unsigned int> &indices, const lkernel &w, float h);
 void InterpolateLaplacian(const std::vector<float> &m, std::vector<float>* phi, const std::vector<float> &rho, const std::vector<glm::vec2> &r, unsigned int n, const std::vector<std::vector<unsigned int>> &indices, const lkernel &w, float h);
+
+// ground function
+
+float Flat(const glm::vec2 &r);

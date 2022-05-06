@@ -132,3 +132,12 @@ void InterpolateLaplacian(const std::vector<float> &m, std::vector<float>* phi, 
         phi->at(i) = val[i];
     }
 }
+
+/**
+ * @brief ground function
+ * @param[in] r position
+ * @return height
+ */
+float Flat(const glm::vec2 &r) {
+    return -0.8;
+}
