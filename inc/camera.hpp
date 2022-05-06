@@ -21,7 +21,6 @@ public:
     glm::mat4 GenProjectionMatrix();
 
     void SetPosition(glm::vec3 position);
-    void SetFov(float fov);
     void SetAspectRatio(float aspect_ratio);
 
 public:
