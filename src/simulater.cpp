@@ -218,9 +218,7 @@ void Simulater::GenerateBoundary() {
         }
 
         // along z-axis
-        min_pos[1] += d[1];
-        max_pos[1] -= d[1];
-        for(int zi = 0; zi < n[1]-2; zi++) {
+        for(int zi = 0; zi < n[1]; zi++) {
             particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
             particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
             min_pos[1] += d[1];
