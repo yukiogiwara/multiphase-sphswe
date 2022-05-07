@@ -14,6 +14,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "constant.hpp"
 #include "utility.hpp"
 #include "kernel.hpp"
 #include "particle_system.hpp"

@@ -61,13 +61,16 @@ Simulater::Simulater(float scale) {
     glGenBuffers(1, &vbo_);
     glBindVertexArray(vao_);
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);
-    glBufferData(GL_ARRAY_BUFFER, n*(sizeof(glm::vec2) + sizeof(float)), NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, n*(sizeof(glm::vec2) + sizeof(float) + sizeof(glm::vec3)), NULL, GL_DYNAMIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, n*sizeof(glm::vec2), particles_->positions_.data());
     glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2), n*sizeof(float), particles_->heights_.data());
+    glBufferSubData(GL_ARRAY_BUFFER, n*(sizeof(glm::vec2) + sizeof(float)), n*sizeof(glm::vec3), particles_->colors_.data());
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
     glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)(n*sizeof(glm::vec2)));
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)(n*(sizeof(glm::vec2) + sizeof(float))));
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
 
     CheckParameters();
 }
@@ -208,6 +211,7 @@ void Simulater::UpdateBuffer() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);    
     glBufferSubData(GL_ARRAY_BUFFER, 0, n*sizeof(glm::vec2), particles_->positions_.data());
     glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2), n*sizeof(float), particles_->heights_.data());
+    // glBufferSubData(GL_ARRAY_BUFFER, n*(sizeof(glm::vec2) + sizeof(float)), n*sizeof(glm::vec3), particles_->colors_.data());
 }
 
 /**
@@ -223,16 +227,16 @@ void Simulater::GenerateBoundary() {
         glm::vec2 min_pos = min_cord_ - (2*l+1)*particle_radius_;
         glm::vec2 max_pos = max_cord_ + (2*l+1)*particle_radius_;
         for(int xi = 0; xi < n[0]; xi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), kBoundaryParticleColor, mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), kBoundaryParticleColor, mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
             min_pos[0] += d[0];
             max_pos[0] -= d[0];
         }
 
         // along z-axis
         for(int zi = 0; zi < n[1]; zi++) {
-            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
-            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
+            particles_->AddParticle(min_pos, glm::vec2(0.0f), glm::vec2(0.0f), kBoundaryParticleColor, mass_, density_, 1.0f + terrain_->GetHeight(min_pos), kBoundary);
+            particles_->AddParticle(max_pos, glm::vec2(0.0f), glm::vec2(0.0f), kBoundaryParticleColor, mass_, density_, 1.0f + terrain_->GetHeight(max_pos), kBoundary);
             min_pos[1] += d[1];
             max_pos[1] -= d[1];
         }
@@ -254,7 +258,7 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
     for(float x = min_r[0]; x <= max_r[0]; x += 2*particle_radius_) {
         for(float z = min_r[1]; z <= max_r[1]; z += 2*particle_radius_) {
             glm::vec2 pos = glm::vec2(x, z);
-            particles_->AddParticle(pos, glm::vec2(0.5f), glm::vec2(0.0f), mass_, density_, 0.0f, kFluid);
+            particles_->AddParticle(pos, glm::vec2(0.5f), glm::vec2(0.0f), kFluidParticleColor, mass_, density_, 0.0f, kFluid);
         }
     }
 }
