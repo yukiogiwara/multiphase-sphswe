@@ -22,6 +22,13 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &target, const glm::ve
 }
 
 /**
+ * @brief destructor
+ */
+Camera::~Camera() {
+
+}
+
+/**
  * @brief generate view matrix
  * @return view matrix
  */
@@ -37,6 +44,24 @@ glm::mat4 Camera::GenViewMatrix() {
 glm::mat4 Camera::GenProjectionMatrix() {
     glm::mat4 projection = glm::perspective(fov_, aspect_ratio_, clliping_near_, clliping_far_);
     return projection;
+}
+
+/**
+ * @brief ImGui settings
+ * @param[in] window window handler
+ */
+void Camera::ImGui(GLFWwindow* window) {
+    ImGui::SetNextTreeNodeOpen(true); 
+    if(ImGui::TreeNode("camera")) {
+        if(ImGui::InputFloat3("position", glm::value_ptr(position_))) {
+            Update();
+        }
+        if(ImGui::InputFloat3("target", glm::value_ptr(target_))) {
+            Update();
+        }
+        ImGui::InputFloat("fov", &fov_, 0.1f, 1.0f);
+        ImGui::TreePop();
+    }
 }
 
 /**
