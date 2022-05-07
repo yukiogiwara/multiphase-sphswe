@@ -29,6 +29,23 @@ DirectionalLight::~DirectionalLight() {
 }
 
 /**
+ * @brief ImGui settings
+ * @param[in] window window handler
+ */
+void DirectionalLight::ImGui(GLFWwindow* window) {
+    ImGui::SetNextTreeNodeOpen(true);
+    if(ImGui::TreeNode("light")) {
+        if(ImGui::InputFloat3("direction", glm::value_ptr(direction_))) {
+            direction_ = glm::normalize(direction_);
+        }
+        ImGui::InputFloat3("ambient", glm::value_ptr(ambient_));
+        ImGui::InputFloat3("diffuse", glm::value_ptr(diffuse_));
+        ImGui::InputFloat3("specular", glm::value_ptr(specular_));
+        ImGui::TreePop();
+    }
+}
+
+/**
  * @brief get direction
  */
 glm::vec3 DirectionalLight::GetDirection() const {
