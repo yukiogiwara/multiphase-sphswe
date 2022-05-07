@@ -92,5 +92,5 @@ void Scene::DrawParticles(const glm::mat4 &view, const glm::mat4 &projection) {
  * @brief update scene
  */
 void Scene::Update() {
-    // simulater_->Evolve();
+    simulater_->Evolve();
 }

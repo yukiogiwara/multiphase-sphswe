@@ -45,7 +45,7 @@ Simulater::Simulater(float scale) {
 
     // initialize particles
     GenerateBoundary();
-    GenerateFluid(glm::vec2(-scale/4.0f), glm::vec2(scale/4.0f));
+    GenerateFluid(glm::vec2(-scale/2.0f), glm::vec2(scale/2.0f));
 
     // nearest neighbor
     neighbors_.resize(particles_->GetNumParticles());
@@ -194,8 +194,8 @@ void Simulater::UpdateBuffer() {
     int fn = particles_->GetNumParticles();
     int n = particles_->GetNumParticles();
     glBindBuffer(GL_ARRAY_BUFFER, vbo_);    
-    glBufferSubData(GL_ARRAY_BUFFER, bn*sizeof(glm::vec2), fn*sizeof(glm::vec2), particles_->positions_.data() + bn);
-    glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2) + bn*sizeof(float), fn*sizeof(float), particles_->heights_.data() + bn);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, n*sizeof(glm::vec2), particles_->positions_.data());
+    glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2), n*sizeof(float), particles_->heights_.data());
 }
 
 /**
@@ -242,7 +242,7 @@ void Simulater::GenerateFluid(const glm::vec2 &min_pos, const glm::vec2 &max_pos
     for(float x = min_r[0]; x <= max_r[0]; x += 2*particle_radius_) {
         for(float z = min_r[1]; z <= max_r[1]; z += 2*particle_radius_) {
             glm::vec2 pos = glm::vec2(x, z);
-            particles_->AddParticle(pos, glm::vec2(0.0f), glm::vec2(0.0f), mass_, density_, 0.0f, kFluid);
+            particles_->AddParticle(pos, glm::vec2(0.5f), glm::vec2(0.0f), mass_, density_, 0.0f, kFluid);
         }
     }
 }
