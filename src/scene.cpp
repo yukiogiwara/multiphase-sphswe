@@ -48,6 +48,19 @@ Scene::~Scene() {
 }
 
 /**
+ * @brief ImGui settings
+ * @param[in] window window handler
+ */
+void Scene::ImGui(GLFWwindow* window) {
+    ImGui::Separator();
+    light_->ImGui(window);
+    ImGui::Separator();
+    camera_->ImGui(window);
+    ImGui::Separator();
+    simulater_->ImGui(window);
+}
+
+/**
  * @brief get delta time
  * @return delta time
  */

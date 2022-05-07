@@ -8,6 +8,9 @@
 #pragma once
 
 #include <memory>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include "light.hpp"
 #include "camera.hpp"
 #include "shader.hpp"
@@ -20,6 +23,8 @@ class Scene {
 public:
     Scene(int window_width, int window_height);
     ~Scene();
+
+    void ImGui(GLFWwindow* window);
 
 public:
     float GetDeltaTime() const;
