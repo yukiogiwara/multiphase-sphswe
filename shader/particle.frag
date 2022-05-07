@@ -1,14 +1,11 @@
 #version 330 core
 
-layout (location = 0) in vec3 aPos;
+out vec4 FragColor;
 
-out vec3 FragPos;
-
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+in vec3 FragPos;
 
 void main() {
-    FragPos = vec3(model * vec4(aPos, 1.0));
-    gl_Position = projection * view * vec4(FragPos, 1.0);
+    vec2 coord = gl_PointCoord - vec2(0.5);
+    if(length(coord) > 0.5) discard;
+    FragColor = vec4(vec3(1.0f, 0.5f, 0.2f), 1.0f);
 }

@@ -30,6 +30,7 @@ public:
     void Update();
 
 private:
+    void DrawParticles(const glm::mat4 &view, const glm::mat4 &projection);
 
 private:
     std::unique_ptr<DirectionalLight> light_;

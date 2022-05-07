@@ -55,6 +55,20 @@ Simulater::Simulater(float scale) {
     CalculateDensity();
     UpdateHeight();
 
+    // generate buffers
+    int n = particles_->GetNumParticles();
+    glGenVertexArrays(1, &vao_);
+    glGenBuffers(1, &vbo_);
+    glBindVertexArray(vao_);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);
+    glBufferData(GL_ARRAY_BUFFER, n*(sizeof(glm::vec2) + sizeof(float)), NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, n*sizeof(glm::vec2), particles_->positions_.data());
+    glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2), n*sizeof(float), particles_->heights_.data());
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
+    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, sizeof(float), (void*)(n*sizeof(glm::vec2)));
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
     CheckParameters();
 }
 
@@ -62,7 +76,8 @@ Simulater::Simulater(float scale) {
  * @brief destructor
  */
 Simulater::~Simulater() {
-
+    glDeleteBuffers(1, &vbo_);
+    glDeleteVertexArrays(1, &vao_);
 }
 
 /**
@@ -73,6 +88,30 @@ void Simulater::Evolve() {
     CalculateAcceleration();
     Integrate();
     UpdateHeight();
+    UpdateBuffer();
+}
+
+/**
+ * @brief draw particles
+ * @param[in] attr particle attribute
+ */
+void Simulater::Draw(ParticleAttribute attr) {
+    switch(attr) {
+        case kBoundary:
+            glBindVertexArray(vao_);
+            glDrawArrays(GL_POINTS, 0, particles_->GetNumParticles(kBoundary));
+            glBindVertexArray(0);
+            break;
+
+        case kFluid:
+            glBindVertexArray(vao_);
+            glDrawArrays(GL_POINTS, particles_->GetNumParticles(kBoundary), particles_->GetNumParticles(kFluid));
+            glBindVertexArray(0);
+            break;
+
+        default:
+            break;
+    }
 }
 
 /**
@@ -145,6 +184,18 @@ void Simulater::UpdateHeight() {
         if(particles_->attributes_[i] == kBoundary) continue;;
         particles_->heights_[i] = particles_->densities_[i] / density_ + terrain_->GetHeight(particles_->positions_[i]);
     }
+}
+
+/**
+ * @brief update vbo
+ */
+void Simulater::UpdateBuffer() {
+    int bn = particles_->GetNumParticles(kBoundary);
+    int fn = particles_->GetNumParticles();
+    int n = particles_->GetNumParticles();
+    glBindBuffer(GL_ARRAY_BUFFER, vbo_);    
+    glBufferSubData(GL_ARRAY_BUFFER, bn*sizeof(glm::vec2), fn*sizeof(glm::vec2), particles_->positions_.data() + bn);
+    glBufferSubData(GL_ARRAY_BUFFER, n*sizeof(glm::vec2) + bn*sizeof(float), fn*sizeof(float), particles_->heights_.data() + bn);
 }
 
 /**

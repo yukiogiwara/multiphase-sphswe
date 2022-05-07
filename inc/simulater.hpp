@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <memory>
 #include "utility.hpp"
@@ -25,6 +27,8 @@ public:
 
     void Evolve();
 
+    void Draw(ParticleAttribute attr);
+
     float GetDeltaTime() const;
 
 public:
@@ -37,6 +41,7 @@ private:
     void CalculateAcceleration();
     void Integrate();
     void UpdateHeight();
+    void UpdateBuffer();
 
     void CheckParameters() const;
 
@@ -68,6 +73,10 @@ private:
     int num_boundary_layers_;
     glm::vec2 min_boundary_cord_;
     glm::vec2 max_boundary_cord_;
+
+    // buffers
+    GLuint vao_;
+    GLuint vbo_;
 
     std::vector<std::vector<int>> neighbors_;
     std::unique_ptr<ParticleSystem> particles_;
