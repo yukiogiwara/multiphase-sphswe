@@ -115,6 +115,18 @@ void Simulater::Draw(ParticleAttribute attr) {
 }
 
 /**
+ * @brief ImGui settings
+ * @param[in] window window handler
+ */
+void Simulater::ImGui(GLFWwindow* window) {
+    ImGui::SetNextTreeNodeOpen(true);
+    if(ImGui::TreeNode("simulation")) {
+        ImGui::InputFloat("kinematic viscosity", &kinematic_viscosity_, 0.2f, 1.0f);
+        ImGui::TreePop();
+    }
+}
+
+/**
  * @brief get delta time
  * @return delta time
  */

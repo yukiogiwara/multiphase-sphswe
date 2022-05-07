@@ -11,6 +11,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <memory>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include "utility.hpp"
 #include "kernel.hpp"
 #include "particle_system.hpp"
@@ -28,6 +31,8 @@ public:
     void Evolve();
 
     void Draw(ParticleAttribute attr);
+
+    void ImGui(GLFWwindow* window);
 
     float GetDeltaTime() const;
 
