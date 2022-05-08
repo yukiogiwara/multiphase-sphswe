@@ -1,5 +1,5 @@
 /**
- * @file main.cpp 
+ * @file simulater.hpp
  * @brief Definition of simulater
  * @author Yuki Ogiwara
  * @date 2022-05-05

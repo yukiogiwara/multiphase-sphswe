@@ -1,5 +1,5 @@
 /**
- * @file main.cpp 
+ * @file constant.hpp 
  * @brief Declaration of constants
  * @author Yuki Ogiwara
  * @date 2022-05-07

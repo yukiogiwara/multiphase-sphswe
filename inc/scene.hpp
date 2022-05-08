@@ -1,5 +1,5 @@
 /**
- * @file main.cpp 
+ * @file scene.hpp
  * @brief Definition of scene
  * @author Yuki Ogiwara
  * @date 2022-05-07

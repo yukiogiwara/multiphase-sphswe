@@ -1,5 +1,5 @@
 /**
- * @file main.cpp 
+ * @file scene.cpp
  * @brief Implementation of scene
  * @author Yuki Ogiwara
  * @date 2022-05-07

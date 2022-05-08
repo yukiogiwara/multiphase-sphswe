@@ -1,5 +1,5 @@
 /**
- * @file main.cpp 
+ * @file simulater.cpp 
  * @brief Implementation of simulater
  * @author Yuki Ogiwara
  * @date 2022-05-05
