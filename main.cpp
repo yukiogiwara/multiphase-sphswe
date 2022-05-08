@@ -41,7 +41,7 @@ void glfwErrorCallBack(int error, const char* description) {
  * @param[in] y position
  */
 void glfwCursorPosCallBack(GLFWwindow* window, double x, double y) {
-
+    if(ImGui::GetIO().WantCaptureMouse) return;
 }
 
 /**
@@ -52,7 +52,7 @@ void glfwCursorPosCallBack(GLFWwindow* window, double x, double y) {
  * @param[in] mods modifier key
  */
 void glfwMouseButtonCallBack(GLFWwindow* window, int button, int action, int mods) {
-
+    if(ImGui::GetIO().WantCaptureMouse) return;
 }
 
 /**
@@ -64,6 +64,7 @@ void glfwMouseButtonCallBack(GLFWwindow* window, int button, int action, int mod
  * @param[in] mods modifier key
  */
 void glfwKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if(ImGui::GetIO().WantCaptureKeyboard) return;
     if(action == GLFW_PRESS) {
         switch(key) {
             case GLFW_KEY_ESCAPE:
