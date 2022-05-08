@@ -31,7 +31,8 @@ public:
 
     void Evolve();
 
-    void Draw(ParticleAttribute attr);
+    void DrawParticles(ParticleAttribute attr);
+    void DrawTerrain();
 
     void ImGui(GLFWwindow* window);
 

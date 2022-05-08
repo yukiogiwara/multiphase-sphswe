@@ -35,6 +35,8 @@ Scene::Scene(int window_width, int window_height) {
     std::string fragment_path = "../shader/particle.frag";
     shader_ = std::make_unique<Shader>(vertex_path.c_str(), fragment_path.c_str());
 
+    terrain_shader_ = std::make_unique<Shader>("../shader/terrain.vert", "../shader/terrain.frag");
+
     // simulater
     float scale = 4.0f;
     simulater_ = std::make_unique<Simulater>(scale);
@@ -84,6 +86,7 @@ void Scene::Draw() {
     glm::mat4 projection = camera_->GenProjectionMatrix();
 
     DrawParticles(view, projection);    
+    DrawTerrain(view, projection);
 }
 
 /**
@@ -97,8 +100,22 @@ void Scene::DrawParticles(const glm::mat4 &view, const glm::mat4 &projection) {
     shader_->SetMat4("model", model);
     shader_->SetMat4("view", view);
     shader_->SetMat4("projection", projection);
-    simulater_->Draw(kBoundary);
-    simulater_->Draw(kFluid);
+    simulater_->DrawParticles(kBoundary);
+    simulater_->DrawParticles(kFluid);
+}
+
+/**
+ * @brief draw terrain
+ * @param[in] view view matrix
+ * @param[in] projection projection matrix
+ */
+void Scene::DrawTerrain(const glm::mat4 &view, const glm::mat4 &projection) {
+    terrain_shader_->Use();
+    glm::mat4 model(1.0f);
+    terrain_shader_->SetMat4("model", model);
+    terrain_shader_->SetMat4("view", view);
+    terrain_shader_->SetMat4("projection", projection);
+    simulater_->DrawTerrain();
 }
 
 /**

@@ -25,9 +25,6 @@ Simulater::Simulater(float scale) {
     gkernel_ = GradSpiky;
     lkernel_ = LaplaceViscosity;
 
-    // terrain
-    terrain_ = std::make_unique<Terrain>(Flat);
-
     // fluid
     mass_ = 2.0;
     density_ = 998.29;
@@ -42,6 +39,9 @@ Simulater::Simulater(float scale) {
     num_boundary_layers_ = 3;
     min_boundary_cord_ = min_cord_ - num_boundary_layers_ * 2 * particle_radius_;
     max_boundary_cord_ = max_cord_ + num_boundary_layers_ * 2 * particle_radius_;
+
+    // terrain
+    terrain_ = std::make_unique<Terrain>(Flat, min_boundary_cord_, max_boundary_cord_);
 
     // initialize particles
     GenerateBoundary();
@@ -98,7 +98,7 @@ void Simulater::Evolve() {
  * @brief draw particles
  * @param[in] attr particle attribute
  */
-void Simulater::Draw(ParticleAttribute attr) {
+void Simulater::DrawParticles(ParticleAttribute attr) {
     switch(attr) {
         case kBoundary:
             glBindVertexArray(vao_);
@@ -115,6 +115,15 @@ void Simulater::Draw(ParticleAttribute attr) {
         default:
             break;
     }
+}
+
+/**
+ * @brief draw terrain
+ */
+void Simulater::DrawTerrain() {
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    terrain_->Draw();
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
 
 /**

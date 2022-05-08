@@ -36,10 +36,12 @@ public:
 
 private:
     void DrawParticles(const glm::mat4 &view, const glm::mat4 &projection);
+    void DrawTerrain(const glm::mat4 &view, const glm::mat4 &projection);
 
 private:
     std::unique_ptr<DirectionalLight> light_;
     std::unique_ptr<Camera> camera_;
     std::unique_ptr<Shader> shader_;
+    std::unique_ptr<Shader> terrain_shader_;
     std::unique_ptr<Simulater> simulater_;
 };
