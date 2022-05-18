@@ -59,7 +59,6 @@ void Scene::ImGui(GLFWwindow* window) {
     ImGui::Separator();
     camera_->ImGui(window);
     ImGui::Separator();
-    simulater_->ImGui(window);
 }
 
 /**
@@ -100,8 +99,7 @@ void Scene::DrawParticles(const glm::mat4 &view, const glm::mat4 &projection) {
     shader_->SetMat4("model", model);
     shader_->SetMat4("view", view);
     shader_->SetMat4("projection", projection);
-    simulater_->DrawParticles(kBoundary);
-    simulater_->DrawParticles(kFluid);
+    simulater_->DrawParticles();
 }
 
 /**

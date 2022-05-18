@@ -29,6 +29,6 @@ const float kGravityAcceleration = 9.80665;
 const float kPointSize = 8.0f;
 
 // phase
-const Phase kPhaseBoundary(2.0f, 998.29f, 30.0f, glm::vec3(0.3f, 0.3f, 0.95f));
-const Phase kPhaseA(2.0f, 998.29f, 30.0f, glm::vec3(0.95f, 0.3f, 0.3f));
+const Phase kPhaseBoundary(2.0f, 998.29f, 30.0f, glm::vec3(0.95f, 0.3f, 0.3f));
+const Phase kPhaseA(2.0f, 998.29f, 30.0f, glm::vec3(0.3f, 0.3f, 0.95f));
 const Phase kPhaseB(2.0f, 998.29f, 30.0f, glm::vec3(0.3f, 0.95f, 0.3f));

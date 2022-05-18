@@ -31,11 +31,11 @@ enum ParticleAttribute {
 
 struct Phase {
     float mass;
-    float density;
-    float kinematic_viscosity;
-    glm::vec3 color;
+    float dens;
+    float visc;
+    glm::vec3 col;
 
-    Phase(float mass, float density, float kinematic_viscosity, const glm::vec3 &color)
-    : mass(mass), density(density), kinematic_viscosity(kinematic_viscosity), color(color)
+    Phase(float mass, float dens, float visc, const glm::vec3 &col)
+    : mass(mass), dens(dens), visc(visc), col(col)
     {}
 };
