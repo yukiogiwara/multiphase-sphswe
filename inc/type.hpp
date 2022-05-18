@@ -26,3 +26,16 @@ enum ParticleAttribute {
     kFluid,
     kNumAttributes
 };
+
+// phase
+
+struct Phase {
+    float mass;
+    float density;
+    float kinematic_viscosity;
+    glm::vec3 color;
+
+    Phase(float mass, float density, float kinematic_viscosity, const glm::vec3 &color)
+    : mass(mass), density(density), kinematic_viscosity(kinematic_viscosity), color(color)
+    {}
+};

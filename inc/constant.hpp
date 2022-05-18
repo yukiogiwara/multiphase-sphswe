@@ -9,6 +9,7 @@
 
 #include <glm/glm.hpp>
 #include <string>
+#include <type.hpp>
 
 // OpenGL
 const int kOpenGLVersionMejor = 3;
@@ -20,5 +21,8 @@ const glm::vec3 kBackgroundColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 // particle
 const float kPointSize = 8.0f;
-const glm::vec3 kBoundaryParticleColor = glm::vec3(0.95f, 0.3f, 0.3f);
-const glm::vec3 kFluidParticleColor = glm::vec3(0.3f, 0.3f, 0.95f);
+
+// phase
+const Phase kPhaseBoundary(2.0f, 998.29f, 30.0f, glm::vec3(0.3f, 0.3f, 0.95f));
+const Phase kPhaseA(2.0f, 998.29f, 30.0f, glm::vec3(0.95f, 0.3f, 0.3f));
+const Phase kPhaseB(2.0f, 998.29f, 30.0f, glm::vec3(0.3f, 0.95f, 0.3f));
