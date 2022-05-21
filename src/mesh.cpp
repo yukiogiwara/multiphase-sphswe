@@ -9,8 +9,12 @@
 
 /**
  * @brief constructor
+ * @param[in] num_vertices number of vertices
  */
-Mesh::Mesh() {
+Mesh::Mesh(int num_vertices) {
+    vertices_.resize(num_vertices);
+    indices_.resize(3*num_vertices);
+
     glGenVertexArrays(1, &vao_);
     glGenBuffers(1, &vbo_);
     glGenBuffers(1, &ebo_);

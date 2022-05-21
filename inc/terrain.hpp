@@ -30,5 +30,5 @@ private:
 
 private:
     ground fn_;
-    Mesh mesh;
+    Mesh mesh_;
 };

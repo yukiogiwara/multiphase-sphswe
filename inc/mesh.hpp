@@ -17,7 +17,7 @@
  */
 class Mesh {
 public:
-    Mesh();
+    Mesh(int num_vertices);
     ~Mesh();
 
     void SendDataToBuffer();
